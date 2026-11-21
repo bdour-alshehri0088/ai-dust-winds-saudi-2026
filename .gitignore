@@ -1,0 +1,20 @@
+# downloaded or large inputs (re-created by the scripts)
+data/forecasts/
+data/obs/
+data/raw/
+data/era5/
+data/susceptibility/
+*.nc
+*.grib2
+*.tif
+*.download
+
+# credentials
+.cdsapirc
+
+# local files
+__pycache__/
+.DS_Store
+*.log
+*.docx
+*_backup.py
