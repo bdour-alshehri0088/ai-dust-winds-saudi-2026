@@ -181,6 +181,8 @@ def main():
     fig.tight_layout()
     for ext in ("png", "pdf"):
         fig.savefig(C.OUT / f"fig_synoptic.{ext}", dpi=300, facecolor="white")
+    from springer_style import to_springer      # journal artwork: results/springer/Fig3.tif
+    to_springer(fig, 3)
     plt.close(fig)
     print("saved fig_activity, fig_spectra, fig_synoptic")
 

@@ -44,10 +44,19 @@ def module(name):
     return m
 
 
+SPRINGER = {"fig01_study_area": (1, "double"), "fig04_wind_scores": (4, "double"),
+            "fig05_direction": (5, "single"), "fig06_storm_timeseries": (6, "double"),
+            "fig07_threshold_skill": (7, "double"), "fig08_dup_eventB": (8, "single"),
+            "fig09_smoothing": (9, "double")}
+
+
 def save(fig, name):
     fig.tight_layout(pad=1.2)
     for ext in ("png", "pdf"):
         fig.savefig(FIG / f"{name}.{ext}", dpi=300, facecolor="white")
+    if name in SPRINGER:                      # journal artwork: results/springer/Fig<n>.tif
+        from springer_style import to_springer
+        to_springer(fig, *SPRINGER[name])
     plt.close(fig)
     print("saved", name)
 
@@ -117,11 +126,6 @@ def fig04(tab, boot):
     lead_lines(axs[2], tab, "vec_rmse", "Vector-wind RMSE (m s$^{-1}$)")
     for ax, t in zip(axs, ["(a) Speed error", "(b) Speed bias (forecast − observed)", "(c) Speed and direction error"]):
         ax.set_title(t, loc="left", fontsize=13)
-    a = boot[(boot.model == "AIFS") & (boot.lead_day <= 6)]
-    sig = (a.ci_high < 0).sum()
-    axs[0].text(0.02, 0.97, f"AIFS below IFS on all 6 days ({a.rmse_diff.max():+.2f} to {a.rmse_diff.min():+.2f} m s$^{{-1}}$);\n"
-                f"significant on {sig} of 6 days (95% block bootstrap)",
-                transform=axs[0].transAxes, va="top", fontsize=10, color=COLORS["AIFS"])
     model_legend(axs[2], loc="upper left", fontsize=10.5, ncol=2)
     save(fig, "fig04_wind_scores")
 
@@ -194,7 +198,7 @@ def fig08(pairs):
     bars = ax.bar(MODELS, [r[m] for m in MODELS], color=[COLORS[m] for m in MODELS], edgecolor="k", lw=1.5)
     ax.bar_label(bars, fmt="%.1f", fontsize=12, padding=3)
     ax.axhline(1, color="#767676", lw=1.2, ls="--")
-    ax.text(-0.42, 1.06, "observed = 1", fontsize=10, color="#4D4D4D", ha="left")
+    ax.text(2, 1.06, "observed = 1", fontsize=10, color="#4D4D4D", ha="center")
     ax.set_ylabel("DUP ratio (forecast / observed)")
     ax.set_title("Dust uplift potential, May storm, days 1–6", loc="left", fontsize=13)
     ax.set_ylim(0, max(r.values()) * 1.2)
@@ -220,7 +224,14 @@ def main():
     boot = pd.read_csv(C.OUT / "bootstrap_vs_ifs.csv")
     pairs = pd.read_csv(C.OUT / "pairs.csv")
     pairs["init"] = pd.to_datetime(pairs["init"]).dt.strftime("%Y-%m-%d")
-    fig01(); fig04(tab, boot); fig05(tab); fig06(pairs); fig07(tab); fig08(pairs); fig09()
+    import sys
+    only = [a for a in sys.argv[1:] if a.startswith("fig")]   # optional subset, e.g. fig04 fig07
+    jobs = {"fig01": fig01, "fig04": lambda: fig04(tab, boot), "fig05": lambda: fig05(tab),
+            "fig06": lambda: fig06(pairs), "fig07": lambda: fig07(tab), "fig08": lambda: fig08(pairs),
+            "fig09": fig09}
+    for k, f in jobs.items():
+        if not only or k in only:
+            f()
 
 
 if __name__ == "__main__":
