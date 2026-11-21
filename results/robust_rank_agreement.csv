@@ -1,0 +1,4 @@
+subset,spearman_rmse_vs_csi,low,high,share_negative,rmse_order,csi_order
+both,0.3,-0.7,0.8999999999999998,0.403,AIFS < GraphCast < Aurora < Pangu < IFS,IFS > Aurora > AIFS > GraphCast > Pangu
+A,0.09999999999999999,-0.9746794344808964,0.7999999999999999,0.489,AIFS < GraphCast < Aurora < Pangu < IFS,IFS > AIFS > Aurora > GraphCast > Pangu
+B,-0.3,-0.8999999999999998,0.7,0.811,GraphCast < AIFS < Aurora < Pangu < IFS,GraphCast > Aurora > IFS > Pangu > AIFS
