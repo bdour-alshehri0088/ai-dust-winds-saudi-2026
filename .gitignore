@@ -18,3 +18,7 @@ __pycache__/
 *.log
 *.docx
 *_backup.py
+
+# figure exports (PNG kept in git)
+results/figures/*.pdf
+results/springer/

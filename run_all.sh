@@ -23,3 +23,7 @@ python 10_paper_figures.py "$DEM"
 python 06_get_soil_ndvi.py
 python 05_susceptibility.py "$DEM"
 python 07_fig_susceptibility.py
+
+# 5. Robustness checks (CSI bootstrap, threshold sensitivity)
+python 12_robustness.py
+python 11_fig_workflow.py

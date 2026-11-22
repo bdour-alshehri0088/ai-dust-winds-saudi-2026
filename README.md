@@ -1,7 +1,7 @@
 # AI and physics-based 10 m wind forecasts for two 2026 dust storms in Saudi Arabia
 
 Code and result tables for the paper
-**"Does lower wind-forecast error mean better strong-wind and dust-storm detection? AI and physics-based forecasts for two 2026 dust storms in Saudi Arabia"** (Alshehri et al., in preparation).
+**"Does lower wind-forecast error mean better strong-wind and dust-storm detection? AI and physics-based forecasts for two 2026 dust storms in Saudi Arabia"** (Alshehri, submitted to *Earth Systems and Environment*, 2026).
 
 Four AI weather models (AIFS Single, GraphCast, Aurora, Pangu-Weather) and ECMWF IFS HRES are verified against METAR observations at nine Saudi airports for the dust storms of 13 January and 3 May 2026, with forecasts initialised up to five days ahead.
 
@@ -30,7 +30,9 @@ The DEM is needed only for Figure 1 and the supplementary surface index. All oth
 | Reanalysis (alternative) | `08_get_era5.py` | Same from the Copernicus CDS; needs a key in `~/.cdsapirc` |
 | Verification | `04_verify.py` | Thresholds, forecast–observation pairs, continuous scores, contingency tables (P90), peak-wind ratio, DUP, block bootstrap |
 | Smoothing | `09_era5_diagnostics.py` | Activity ratio, kinetic-energy spectra, synoptic maps |
-| Figures | `10_paper_figures.py` | Paper figures in `results/figures/` |
+| Figures | `10_paper_figures.py` | Paper figures in `results/figures/`; journal artwork (Fig<n>.tif, 600 dpi, 174/84 mm) in `results/springer/` via `springer_style.py` |
+| Figures | `11_fig_workflow.py` | Fig. 2, the nine-step verification workflow |
+| Robustness | `12_robustness.py` | CSI block bootstrap, RMSE–CSI rank agreement, threshold sensitivity (P90, P95, 8 and 10 m/s) |
 | Supplement | `06_get_soil_ndvi.py`, `05_susceptibility.py`, `07_fig_susceptibility.py` | SoilGrids and NOAA CDR VIIRS NDVI; static surface index E = S × G × B |
 | Utility | `dem_check.py` | Compares a local DEM tile with Copernicus GLO-90 to identify its source |
 
@@ -50,6 +52,9 @@ Settings (domain, events, stations, initialisations, thresholds) are in `config.
 | `peak_wind.csv` | Peak-wind ratio and timing per model, event, initialisation, station | Table 13 |
 | `bootstrap_vs_ifs.csv` | RMSE difference from IFS with block-bootstrap intervals | Section 5.3 |
 | `smoothing_by_lead.csv`, `smoothing_by_event_lead.csv` | Activity and small-scale power ratios | Table 15, Figure 9 |
+| `robust_threshold_sensitivity.csv` | Test 1 and Test 2 CSI at four thresholds, per storm | Online Resource 1, Tables S1–S2 |
+| `robust_csi_bootstrap.csv` | CSI and CSI difference from IFS with block-bootstrap intervals | Section 5.5 |
+| `robust_rank_agreement.csv` | Spearman correlation between RMSE and CSI rankings | Section 5.5 |
 | `pairs.csv` | Every forecast–observation pair | All |
 
 Final figures are in `results/figures/`.
